@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: claims-service
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:3306/insurancedb
+    username: root
+    password: root
+    driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8180
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true

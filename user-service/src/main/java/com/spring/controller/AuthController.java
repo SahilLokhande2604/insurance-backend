@@ -115,5 +115,15 @@ public class AuthController {
         return userRepository.findById(id.toString())
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
-
+    
+    
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization")String authHeader){
+    	if(authHeader == null || !authHeader.startsWith("Bearer")) {
+    		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No token provided");
+    	}
+    	return ResponseEntity.ok("Logged out successfully");   	
+    }
+    
+    
 }
