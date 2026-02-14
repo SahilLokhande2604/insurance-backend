@@ -12,8 +12,8 @@ public class DataSeeder {
     @Bean
     CommandLineRunner init(UserRepository repo) {
         return args -> {
-            repo.save(new User("admin", "password", "ROLE_ADMIN"));
-            repo.save(new User("user", "123456", "ROLE_USER"));
+            repo.save(new User("admin", "password", "ROLE_ADMIN", "admin", "1234567890"));
+            repo.save(new User("user", "123456", "ROLE_USER", "user", "1234567890"));
         };
     }
 }

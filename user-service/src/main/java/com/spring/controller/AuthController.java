@@ -1,5 +1,6 @@
 package com.spring.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +74,8 @@ public class AuthController {
     public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
         String username = request.getUsername();
         String password = request.getPassword();
+        String name = request.getName();
+        String phone = request.getPhone();
         if (userRepository.existsById(username)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
         }
@@ -80,6 +83,8 @@ public class AuthController {
         newUser.setUsername(username);
         newUser.setPassword(password); // hash in production!
         newUser.setRole("ROLE_USER");
+        newUser.setName(name);
+        newUser.setPhone(phone);
         userRepository.save(newUser);
         return ResponseEntity.ok("User registered successfully");
     }
@@ -103,6 +108,11 @@ public class AuthController {
     @GetMapping("/by-username/{username}")
     public Optional<User> getUserByUsername(@PathVariable String username) {
         return userRepository.findByUsername(username);
+    }
+    
+    @GetMapping()
+    public List<User> getAllUser() {
+        return userRepository.findAll();
     }
     
     
