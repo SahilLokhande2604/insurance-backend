@@ -2,9 +2,9 @@ spring:
   application:
     name: claims-service
   datasource:
-    url: jdbc:mysql://${DB_HOST:localhost}:3306/insurancedb
+    url: jdbc:mysql://${DB_HOST:localhost}:3306/claimDB
     username: root
-    password: root
+    password: Sahil@1402
     driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect

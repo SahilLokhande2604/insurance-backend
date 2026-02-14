@@ -5,12 +5,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "User_Jwt")
+@Table(name = "userDB")
 public class User {
     @Id
     private String username;
     private String password;
     private String role;
+
+    private int userId;
     
 	// Getters and setters
     public String getUsername() { return username; }
@@ -21,6 +23,13 @@ public class User {
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+    
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 	public User() {
 		// TODO Auto-generated constructor stub
 	}

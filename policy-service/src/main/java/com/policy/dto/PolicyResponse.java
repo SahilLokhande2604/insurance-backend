@@ -1,16 +1,29 @@
 package com.policy.dto;
 
-
 public class PolicyResponse {
 
     private Long id;
-    private String policyNumber;
+    private String policyName;
     private String policyType;
     private Double coverageAmount;
     private Double premiumAmount;
-    private String status;
-    private Long userId;
-    
+    private String description;
+    private boolean active;
+
+    public PolicyResponse() {}
+
+    public PolicyResponse(Long id, String policyName, String policyType,
+                          Double coverageAmount, Double premiumAmount,
+                          String description, boolean active) {
+        this.id = id;
+        this.policyName = policyName;
+        this.policyType = policyType;
+        this.coverageAmount = coverageAmount;
+        this.premiumAmount = premiumAmount;
+        this.description = description;
+        this.active = active;
+    }
+
 	public Long getId() {
 		return id;
 	}
@@ -19,12 +32,12 @@ public class PolicyResponse {
 		this.id = id;
 	}
 
-	public String getPolicyNumber() {
-		return policyNumber;
+	public String getPolicyName() {
+		return policyName;
 	}
 
-	public void setPolicyNumber(String policyNumber) {
-		this.policyNumber = policyNumber;
+	public void setPolicyName(String policyName) {
+		this.policyName = policyName;
 	}
 
 	public String getPolicyType() {
@@ -51,37 +64,22 @@ public class PolicyResponse {
 		this.premiumAmount = premiumAmount;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public Long getUserId() {
-		return userId;
+	public boolean isActive() {
+		return active;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
-	public PolicyResponse() {
-		super();
-	}
-
-	public PolicyResponse(Long id, String policyNumber, String policyType, Double coverageAmount, Double premiumAmount,
-			String status, Long userId) {
-		super();
-		this.id = id;
-		this.policyNumber = policyNumber;
-		this.policyType = policyType;
-		this.coverageAmount = coverageAmount;
-		this.premiumAmount = premiumAmount;
-		this.status = status;
-		this.userId = userId;
-	}
-    
+    // Getters and Setters
     
 }

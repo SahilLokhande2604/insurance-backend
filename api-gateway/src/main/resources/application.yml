@@ -1,199 +1,113 @@
-###spring:
-###  application:
-###    name: api-gateway
-###  cloud:
-###    gateway:
-###      routes:
-###        - id: claims-service
-###          uri: http://localhost:8180
-###          predicates:
-###            - Path= /api/claims/**
-###        - id: policy-service
-###          uri: http://localhost:8089
-###          predicates:
-###            - Path= /api/policies/**
-###        - id: user-service
-###          uri: http://localhost:8080
-###          predicates:
-###            - Path= /api/users/**
-###        - id: payment-service
-###          uri: http://localhost:8084
-###          predicates:
-###            - Path= /api/payments/**
-###        - id: notification-service
-###          uri: http://localhost:8087
-###          predicates:
-###            - Path= /api/notifications/**
-### 
-### 
-###server:
-###  port: 8085
-### 
-###eureka:
-###  client:
-###    register-with-eureka: true
-###    fetch-registry: true
-### 
-### 
-##spring:
-##  application:
-##    name: api-gateway
-##
-##  codec:
-##    max-in-memory-size: 10MB
-##
-##  cloud:
-##    discovery:
-##      enabled: true
-##      locator:
-##        enabled: true
-##        lower-case-service-id: true
-##
-##    gateway:
-##      httpserver:
-##        wiretap: true
-##      httpclient:
-##        wiretap: true
-##
-##      globalcors:
-##        cors-configurations:
-##          '[/**]':
-##            allowedOrigins:
-##              - "http://localhost:5173"
-##            allowedMethods:
-##              - GET
-##              - POST
-##              - PUT
-##              - DELETE
-##              - OPTIONS
-##            allowedHeaders:
-##              - "*"
-##            allowCredentials: true
-##
-##      routes:
-##        - id: policy-service
-##          uri: lb://POLICY-SERVICE
-##          predicates:
-##            - Path=/api/policies/**
-##
-##        - id: claims-service
-##          uri: lb://CLAIMS-SERVICE
-##          predicates:
-##            - Path=/api/claims/**
-##
-##        - id: user-service
-##          uri: lb://USER-SERVICE
-##          predicates:
-##            - Path=/api/users/**
-##
-##        - id: payment-service
-##          uri: lb://PAYMENT-SERVICE
-##          predicates:
-##            - Path=/api/payments/**
-##
-##        - id: notification-service
-##          uri: lb://NOTIFICATION-SERVICE
-##          predicates:
-##            - Path=/api/notifications/**
-##      default-filters:
-##       - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
-##
-##server:
-##  port: 8085
-##
-##logging:
-##  level:
-##    reactor.netty: DEBUG
-##
-##eureka:
-##  client:
-##    service-url:
-##      defaultZone: http://localhost:8761/eureka
-##    register-with-eureka: true
-##    fetch-registry: true
-##
-##  instance:
-##    prefer-ip-address: true
-##    hostname: localhost
 #spring:
 #  application:
 #    name: api-gateway
-#
-#  codec:
-#    max-in-memory-size: 10MB
-#
 #  cloud:
-#    discovery:
-#      enabled: true
-#      locator:
-#        enabled: true
-#        lower-case-service-id: true
-#
 #    gateway:
-#      httpserver:
-#        wiretap: true
-#      httpclient:
-#        wiretap: true
-#
-#      globalcors:
-#        add-to-simple-url-handler-mapping: true   # 🔥 THIS IS REQUIRED
-#        cors-configurations:
-#          '[/**]':
-#            allowedOrigins:
-#              - "http://localhost:5173"
-#            allowedMethods:
-#              - GET
-#              - POST
-#              - PUT
-#              - DELETE
-#              - OPTIONS
-#            allowedHeaders:
-#              - "*"
-#            allowCredentials: true
-#
-#      default-filters:
-#        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
-#
 #      routes:
-#        - id: policy-service
-#          uri: lb://POLICY-SERVICE
-#          predicates:
-#            - Path=/api/policies/**
-#
 #        - id: claims-service
-#          uri: lb://CLAIMS-SERVICE
+#          uri: http://localhost:8180
 #          predicates:
-#            - Path=/api/claims/**
-#
+#            - Path= /api/claims/**
+#        - id: policy-service
+#          uri: http://localhost:8089
+#          predicates:
+#            - Path= /api/policies/**
 #        - id: user-service
-#          uri: lb://USER-SERVICE
+#          uri: http://localhost:8080
 #          predicates:
-#            - Path=/api/users/**
-#
+#            - Path= /api/users/**
 #        - id: payment-service
-#          uri: lb://PAYMENT-SERVICE
+#          uri: http://localhost:8084
 #          predicates:
-#            - Path=/api/payments/**
-#
+#            - Path= /api/payments/**
 #        - id: notification-service
-#          uri: lb://NOTIFICATION-SERVICE
+#          uri: http://localhost:8087
 #          predicates:
-#            - Path=/api/notifications/**
-#
+#            - Path= /api/notifications/**
+# 
+# 
 #server:
 #  port: 8085
-#
-#logging:
-#  level:
-#    reactor.netty: DEBUG
-#
+# 
 #eureka:
 #  client:
-#    service-url:
-#      defaultZone: http://localhost:8761/eureka
 #    register-with-eureka: true
 #    fetch-registry: true
-#
-#  instance:
-#    prefer-ip-address: true
-#    hostname: localhost
+# 
+# 
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+
+      # ======================
+      # GLOBAL CORS CONFIG
+      # ======================
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:5173"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
+
+      # ======================
+      # ROUTES CONFIGURATION
+      # ======================
+      routes:
+
+        - id: claims-service
+          uri: http://localhost:8180
+          predicates:
+            - Path=/api/claims/**
+
+        - id: policy-service
+          uri: http://localhost:8089
+          predicates:
+            - Path=/api/policies/**
+
+        - id: user-policy
+          uri: http://localhost:8089
+          predicates:
+            - Path=/api/user-policies/**
+
+        - id: user-service
+          uri: http://localhost:8080
+          predicates:
+            - Path=/api/users/**
+
+        - id: payment-service
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/payments/**
+
+        - id: notification-service
+          uri: http://localhost:8087
+          predicates:
+            - Path=/api/notifications/**		
+
+        - id: customersupport-service
+          uri: http://localhost:8090
+          predicates:
+           - Path=/api/support/**
+
+server:
+  port: 8085
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+  instance:
+    prefer-ip-address: true

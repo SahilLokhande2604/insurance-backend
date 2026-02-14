@@ -28,15 +28,6 @@ public class AuthController {
     @Autowired
     private UserRepository userRepository;
 
-//    @PostMapping("/login")
-//    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password, @RequestParam String role) {
-//        Optional<User> userOpt = userRepository.findByUsername(username);
-//        if (userOpt.isPresent() && userOpt.get().getPassword().equals(password) && userOpt.get().getRole().equals(role)) {
-//            String token = JwtUtil.generateToken(username,role);
-//            return ResponseEntity.ok(token);
-//        }
-//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-//    }
     
     @PostMapping("/login")
     public ResponseEntity<?> login(
@@ -76,23 +67,7 @@ public class AuthController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
     }
-    
-    
-    
-//    @PostMapping("/register")
-//    public ResponseEntity<String> register(@RequestBody String username, @RequestBody String password) {
-//        if (userRepository.existsById(username)) {
-//            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
-//        }
-//
-//        User newUser = new User();
-//        newUser.setUsername(username);
-//        newUser.setPassword(password); // In production, hash this!
-//        newUser.setRole("ROLE_USER");  // Default role
-//
-//        userRepository.save(newUser);
-//        return ResponseEntity.ok("User registered successfully");
-//    }
+
     
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
@@ -111,7 +86,7 @@ public class AuthController {
     
     
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
+    public User getUserById(@PathVariable String id) {
         return userRepository.findById(id.toString())
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
@@ -124,6 +99,17 @@ public class AuthController {
     	}
     	return ResponseEntity.ok("Logged out successfully");   	
     }
+    
+    @GetMapping("/by-username/{username}")
+    public Optional<User> getUserByUsername(@PathVariable String username) {
+        return userRepository.findByUsername(username);
+    }
+    
+    
+
+    
+    
+
     
     
 }

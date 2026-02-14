@@ -1,6 +1,18 @@
+server:
+  port: 8080
+
 spring:
   application:
-    name: JWTExampleDynamic
+    name: user-service
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:3306/userDB
+    username: root
+    password: Sahil@1402
+    driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+     ddl-auto: update
   kafka:
     bootstrap-servers: localhost:9094
     producer:

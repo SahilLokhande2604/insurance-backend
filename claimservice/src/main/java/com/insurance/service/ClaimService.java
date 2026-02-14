@@ -1,3 +1,27 @@
+//package com.insurance.service;
+//
+//import java.util.List;
+//import java.util.Optional;
+//
+//import com.insurance.dto.ClaimRequestDto;
+//import com.insurance.dto.ClaimResponse;
+//import com.insurance.dto.ClaimResponseDto;
+//import com.insurance.model.Claim;
+//
+//public interface ClaimService {
+//	
+//	public Claim addClaim(Claim request);
+//
+//	public String checkClaimStatus(Long claimId);
+//
+//	public List<Claim> getAllClaimReview();
+//
+//	public Optional<Claim> getClaim(Long claimId);
+//	
+//	public ClaimResponse claimReview(ClaimRequestDto request);
+//
+//	
+//}
 package com.insurance.service;
 
 import java.util.List;
@@ -5,20 +29,21 @@ import java.util.Optional;
 
 import com.insurance.dto.ClaimRequestDto;
 import com.insurance.dto.ClaimResponse;
-import com.insurance.dto.ClaimResponseDto;
 import com.insurance.model.Claim;
 
 public interface ClaimService {
-	
-	public Claim addClaim(Claim request);
 
-	public String checkClaimStatus(Long claimId);
+    Claim addClaim(Claim claim);
 
-	public List<Claim> getAllClaimReview();
+    String checkClaimStatus(Long claimId);
 
-	public Optional<Claim> getClaim(Long claimId);
-	
-	public ClaimResponse claimReview(ClaimRequestDto request);
+    Optional<Claim> getClaim(Long claimId);
 
-	
+    List<Claim> getAllClaimReview();
+
+    ClaimResponse claimReview(ClaimRequestDto request);
+
+	List<Claim> getClaimsByUser(Long userId);
+    
+    
 }
