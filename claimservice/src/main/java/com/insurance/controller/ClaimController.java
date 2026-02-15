@@ -147,6 +147,8 @@ package com.insurance.controller;
 import com.insurance.dto.ClaimResponse;
 import com.insurance.model.Claim;
 import com.insurance.service.ClaimService;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -163,12 +165,12 @@ public class ClaimController {
 
     // ================= USER =================
     @PostMapping("/add")
-    public Claim addClaim(@RequestBody Claim claim) {
-        return claimService.addClaim(claim);
+    public Claim addClaim(@RequestBody Claim claim, @RequestHeader("X-USERNAME") String username) {
+        return claimService.addClaim(claim, username);
     }
 
-    @GetMapping("/user/{username}")
-    public List<Claim> getClaimsByUser(@PathVariable String username) {
+    @GetMapping("/user")
+    public List<Claim> getClaimsByUser( @RequestHeader("X-USERNAME") String username)  {
         return claimService.getClaimsByUser(username);
     }
 
@@ -185,10 +187,20 @@ public class ClaimController {
         return claimService.getAllClaimReview();
     }
 
+//    @PostMapping("/admin/review/{claimId}")
+//    public ClaimResponse reviewClaim(
+//            @PathVariable Long claimId,
+//            @RequestParam String action) { // action=APPROVE/REJECT
+//        return claimService.reviewClaim(action, claimId);
+//    }
+    
     @PostMapping("/admin/review/{claimId}")
-    public ClaimResponse reviewClaim(
+    public ResponseEntity<ClaimResponse> reviewClaim(
             @PathVariable Long claimId,
-            @RequestParam String action) { // action=APPROVE/REJECT
-        return claimService.reviewClaim(action, claimId);
+            @RequestParam String action) {
+
+        ClaimResponse response = claimService.reviewClaim(action, claimId);
+        return ResponseEntity.ok(response);
     }
+
 }

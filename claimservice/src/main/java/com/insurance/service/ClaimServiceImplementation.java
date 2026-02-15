@@ -450,8 +450,9 @@ public class ClaimServiceImplementation implements ClaimService {
     private RestTemplate restTemplate;
 
     @Override
-    public Claim addClaim(Claim claim) {
+    public Claim addClaim(Claim claim, String username) {
         claim.setStatus("PENDING"); // default
+        claim.setCustomerUsername(username);
         return claimRepository.save(claim);
     }
 
@@ -545,7 +546,28 @@ public class ClaimServiceImplementation implements ClaimService {
 
 	@Override
 	public ClaimResponse reviewClaim(String adminAction, Long claimId) {
-		// TODO Auto-generated method stub
-		return null;
+
+	    Optional<Claim> optionalClaim = claimRepository.findById(claimId);
+
+	    if (optionalClaim.isEmpty()) {
+	        return new ClaimResponse("FAIL", "Claim not found");
+	    }
+
+	    Claim claim = optionalClaim.get();
+
+	    if ("APPROVED".equalsIgnoreCase(adminAction)) {
+	        claim.setStatus("APPROVED");
+	        claim.setNote("Claim approved by admin.");
+	    } else if ("REJECTED".equalsIgnoreCase(adminAction)) {
+	        claim.setStatus("REJECTED");
+	        claim.setNote("Claim rejected by admin.");
+	    } else {
+	        return new ClaimResponse("FAIL", "Invalid action");
+	    }
+
+	    claimRepository.save(claim);
+
+	    return new ClaimResponse(claim.getStatus(), claim.getNote());
 	}
+
 }

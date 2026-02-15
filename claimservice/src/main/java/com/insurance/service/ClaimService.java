@@ -63,7 +63,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ClaimService {
-    Claim addClaim(Claim claim);
+    Claim addClaim(Claim claim, String username);
     List<Claim> getClaimsByUser(String username);
     List<Claim> getAllClaims();
     ClaimResponse reviewClaim(String adminAction, Long claimId);
