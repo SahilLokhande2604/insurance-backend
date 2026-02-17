@@ -91,8 +91,8 @@ public Notification sendNotification(Notification notification) {
 	}
 
 	@Transactional
-	public void markAllAsRead(Long userId) {
-		List<Notification> notifications = notificationRepository.findByUserId(userId);
+	public void markAllAsRead(String username) {
+		List<Notification> notifications = notificationRepository.findByUsername(username);
 		for (Notification notification : notifications) {
 			if (!notification.getIsRead()) {
 				notification.setIsRead(true);
@@ -103,8 +103,8 @@ public Notification sendNotification(Notification notification) {
 	}
 
 	@Transactional(readOnly = true)
-	public List<Notification> getNotificationsByUser(Long userId) {
-		return notificationRepository.findByUserId(userId);
+	public List<Notification> getNotificationsByUser(String username) {
+		return notificationRepository.findByUsername(username);
 	}
 
 	@Transactional(readOnly = true)

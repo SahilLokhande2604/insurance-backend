@@ -444,6 +444,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import com.insurance.kafka.ClaimEventProducer;
 
 import java.util.*;
 
@@ -452,15 +453,27 @@ public class ClaimServiceImplementation implements ClaimService {
 
     @Autowired
     private ClaimRepository claimRepository;
-
+    
     @Autowired
     private RestTemplate restTemplate;
+    
+    @Autowired
+    private ClaimEventProducer claimEventProducer;
 
     @Override
     public Claim addClaim(Claim claim, String username) {
         claim.setStatus("PENDING"); // default
         claim.setCustomerUsername(username);
-        return claimRepository.save(claim);
+        
+        Claim savedClaim = claimRepository.save(claim);
+
+        // 🔥 SEND KAFKA EVENT
+        claimEventProducer.sendClaimSubmittedEvent(
+                savedClaim.getCustomerUsername(), 
+                "Claim ID: " + savedClaim.getClaimId()
+        );
+
+        return savedClaim;
     }
 
     @Override
@@ -551,6 +564,32 @@ public class ClaimServiceImplementation implements ClaimService {
 		return null;
 	}
 
+//	@Override
+//	public ClaimResponse reviewClaim(String adminAction, Long claimId) {
+//
+//	    Optional<Claim> optionalClaim = claimRepository.findById(claimId);
+//
+//	    if (optionalClaim.isEmpty()) {
+//	        return new ClaimResponse("FAIL", "Claim not found");
+//	    }
+//
+//	    Claim claim = optionalClaim.get();
+//
+//	    if ("APPROVED".equalsIgnoreCase(adminAction)) {
+//	        claim.setStatus("APPROVED");
+//	        claim.setNote("Claim approved by admin.");
+//	    } else if ("REJECTED".equalsIgnoreCase(adminAction)) {
+//	        claim.setStatus("REJECTED");
+//	        claim.setNote("Claim rejected by admin.");
+//	    } else {
+//	        return new ClaimResponse("FAIL", "Invalid action");
+//	    }
+//
+//	    claimRepository.save(claim);
+//
+//	    return new ClaimResponse(claim.getStatus(), claim.getNote());
+//	}
+	
 	@Override
 	public ClaimResponse reviewClaim(String adminAction, Long claimId) {
 
@@ -565,9 +604,21 @@ public class ClaimServiceImplementation implements ClaimService {
 	    if ("APPROVED".equalsIgnoreCase(adminAction)) {
 	        claim.setStatus("APPROVED");
 	        claim.setNote("Claim approved by admin.");
+
+	        claimEventProducer.sendClaimApprovedEvent(
+	                claim.getCustomerUsername(),
+	                claim.getAmount()
+	        );
+
 	    } else if ("REJECTED".equalsIgnoreCase(adminAction)) {
 	        claim.setStatus("REJECTED");
 	        claim.setNote("Claim rejected by admin.");
+
+	        claimEventProducer.sendClaimRejectedEvent(
+	                claim.getCustomerUsername(),
+	                "Rejected by admin"
+	        );
+
 	    } else {
 	        return new ClaimResponse("FAIL", "Invalid action");
 	    }

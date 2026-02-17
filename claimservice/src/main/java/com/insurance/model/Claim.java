@@ -344,6 +344,26 @@ public class Claim {
 	public void setCustomerId(Long customerId) {
 		this.customerId = customerId;
 	}
+
+	public Claim(Long claimId, Long customerId, Long policyId, String customerUsername, String claimType, String status,
+			Double amount, String note, String documentType, String documentId, Double coverageAmount,
+			LocalDate policyStartDate, LocalDate policyEndDate) {
+		super();
+		this.claimId = claimId;
+		this.customerId = customerId;
+		this.policyId = policyId;
+		this.customerUsername = customerUsername;
+		this.claimType = claimType;
+		this.status = status;
+		this.amount = amount;
+		this.note = note;
+		this.documentType = documentType;
+		this.documentId = documentId;
+		this.coverageAmount = coverageAmount;
+		this.policyStartDate = policyStartDate;
+		this.policyEndDate = policyEndDate;
+	}
     
+	
 }
 

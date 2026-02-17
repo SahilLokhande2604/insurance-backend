@@ -78,45 +78,76 @@ public class UserEventConsumer {
 //        }
 //    }
     
-    @KafkaListener(topics = "insurance", groupId = "notification-service")
-    public void consume(UserEvent event) {
-
-        if ("user".equals(event.getType())) {
-
-            Notification notification = new Notification();
-
-            notification.setUserId(event.getUserId());
-            notification.setMessage(event.getMessage());
-            notification.setType("user");
-            notification.setStatus("SENT");
-            notification.setEventType(event.getEventType());
-            notification.setIsRead(false);
-
-            notificationService.sendNotification(notification);
-
-            System.out.println("Notification saved successfully!");
-        }
-    }
+//    @KafkaListener(topics = "insurance", groupId = "notification-service")
+//    public void consume(UserEvent event) {
+//
+//        if ("user".equals(event.getType())) {
+//
+//            Notification notification = new Notification();
+//
+//            notification.setUserId(event.getUserId());
+//            notification.setMessage(event.getMessage());
+//            notification.setType("user");
+//            notification.setStatus("SENT");
+//            notification.setEventType(event.getEventType());
+//            notification.setIsRead(false);
+//
+//            notificationService.sendNotification(notification);
+//
+//            System.out.println("Notification saved successfully!");
+//        }
+//    }
     
-    @KafkaListener(
-            topics = "insurance",
-            groupId = "notification-service"
-    )
+//    @KafkaListener(
+//            topics = "insurance",
+//            groupId = "notification-service"
+//    )
+//    public void onMessage(String message) {
+//
+//        System.out.println("RAW MESSAGE RECEIVED: " + message);
+//
+//        Notification n = new Notification();
+//        n.setUserId(0L);
+//        n.setMessage("User register successfully");
+//        n.setType("user");
+//        n.setStatus("SENT");
+//        n.setIsRead(false);
+//        n.setCreatedAt(LocalDateTime.now());
+//        n.setUpdatedAt(LocalDateTime.now());
+//
+//        notificationService.sendNotification(n);
+//    }
+    
+    @KafkaListener(topics = "insurance", groupId = "notification-service")
     public void onMessage(String message) {
 
-        System.out.println("RAW MESSAGE RECEIVED: " + message);
+        try {
+            System.out.println("RAW MESSAGE RECEIVED: " + message);
 
-        Notification n = new Notification();
-        n.setUserId(0L);
-        n.setMessage("User register successfully");
-        n.setType("user");
-        n.setStatus("SENT");
-        n.setIsRead(false);
-        n.setCreatedAt(LocalDateTime.now());
-        n.setUpdatedAt(LocalDateTime.now());
+            Map<String, Object> event =
+                    objectMapper.readValue(message, Map.class);
 
-        notificationService.sendNotification(n);
+            Notification n = new Notification();
+
+            n.setUsername(event.get("username").toString()); 
+            n.setType(event.get("type").toString());
+            n.setEventType(event.get("eventType").toString());
+            n.setMessage(event.get("message").toString());
+            n.setStatus(event.get("status").toString());
+
+            n.setIsRead(false);
+            n.setCreatedAt(LocalDateTime.now());
+            n.setUpdatedAt(LocalDateTime.now());
+
+            notificationService.sendNotification(n);
+
+            System.out.println("SAVED NOTIFICATION SUCCESSFULLY");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 
 
 

@@ -1,3 +1,25 @@
+#spring:
+#  application:
+#    name: claims-service
+#  datasource:
+#    url: jdbc:mysql://${DB_HOST:localhost}:3306/claimDB
+#    username: root
+#    password: Sahil@1402
+#    driverClassName: com.mysql.cj.jdbc.Driver
+#  jpa:
+#    database-platform: org.hibernate.dialect.MySQL8Dialect
+#    hibernate:
+#      ddl-auto: update
+#server:
+#  port: 8180
+#
+#eureka:
+#  client:
+#    register-with-eureka: true
+#    fetch-registry: true
+
+
+
 spring:
   application:
     name: claims-service
@@ -10,6 +32,20 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: update
+
+  # ✅ Kafka Configuration Added
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+      group-id: ${spring.application.name}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
+
 server:
   port: 8180
 

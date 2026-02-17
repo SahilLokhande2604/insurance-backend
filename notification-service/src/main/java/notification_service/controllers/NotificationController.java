@@ -29,8 +29,8 @@ public class NotificationController {
 
 	// GET /api/notifications/user/{userId}
 	@GetMapping("/user/{userId}")
-	public ResponseEntity<List<Notification>> getNotificationsByUser(@PathVariable Long userId) {
-		return ResponseEntity.ok(notificationService.getNotificationsByUser(userId));
+	public ResponseEntity<List<Notification>> getNotificationsByUser(@PathVariable String username) {
+		return ResponseEntity.ok(notificationService.getNotificationsByUser(username));
 	}
 
 	// GET /api/notifications
@@ -50,9 +50,9 @@ public class NotificationController {
 	}
 
 	// PUT /api/notifications/user/{userId}/read-all
-	@PutMapping("/user/{userId}/read-all")
-	public ResponseEntity<Void> markAllAsRead(@PathVariable Long userId) {
-		notificationService.markAllAsRead(userId);
+	@PutMapping("/user/{username}/read-all")
+	public ResponseEntity<Void> markAllAsRead(@PathVariable String username) {
+		notificationService.markAllAsRead(username);
 		return ResponseEntity.noContent().build();
 	}
 }

@@ -22,8 +22,8 @@ public class Notification {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "user_id", nullable = false)
-	private Long userId;
+	@Column(name = "username", nullable = false)
+	private String username;
 
 	@Column(nullable = false)
 	private String message;
@@ -59,11 +59,13 @@ public class Notification {
 
 
 
-	public Notification(Long id, Long userId, String message, String type, String status, String eventType,
+	
+
+	public Notification(Long id, String username, String message, String type, String status, String eventType,
 			Boolean isRead, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		super();
 		this.id = id;
-		this.userId = userId;
+		this.username = username;
 		this.message = message;
 		this.type = type;
 		this.status = status;
@@ -73,6 +75,8 @@ public class Notification {
 		this.updatedAt = updatedAt;
 	}
 
+
+
 	public Long getId() {
 		return id;
 	}
@@ -81,13 +85,19 @@ public class Notification {
 		this.id = id;
 	}
 
-	public Long getUserId() {
-		return userId;
+	
+
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
+
+
 
 	public String getMessage() {
 		return message;
@@ -144,6 +154,8 @@ public class Notification {
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+
+
 	
 	
 }

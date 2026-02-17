@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.spring.kafka.UserEventProducer;
 
 import com.spring.model.User;
 import com.spring.repo.UserRepository;
@@ -27,8 +28,8 @@ import io.jsonwebtoken.Claims;
 @RequestMapping("/api/users")
 public class AuthController {
 
-//    @Autowired
-//    private UserEventProducer userEventProducer;
+    @Autowired
+    private UserEventProducer userEventProducer;
 
     @Autowired
     private UserRepository userRepository;
@@ -47,6 +48,13 @@ public class AuthController {
         }
      
         User user = userOpt.get();
+        
+     // 🔥 SEND LOGIN EVENT
+        userEventProducer.sendUserLoginEvent(
+                Long.valueOf(username.hashCode())
+        );
+
+        
         String token = JwtUtil.generateToken(user.getUsername(), user.getRole());
      
         return ResponseEntity.ok(token);
@@ -91,6 +99,14 @@ public class AuthController {
         newUser.setPhone(phone);
         userRepository.save(newUser);
 //        userEventProducer.sendUserEvent("New user registered: " + username);
+        
+        // 🔥 SEND KAFKA EVENT HERE
+        userEventProducer.sendUserRegistrationEvent(
+                Long.valueOf(username.hashCode()),  // temporary unique ID
+                username,
+                username + "@mail.com"
+        );
+        
         return ResponseEntity.ok("User registered successfully");
     }
     
