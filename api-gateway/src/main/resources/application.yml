@@ -98,6 +98,10 @@ spring:
           uri: http://localhost:8090
           predicates:
            - Path=/api/support/**
+        - id: customersupport-service
+          uri: http://localhost:8090
+          predicates:
+           - Path=/api/admin/support/**
 
 server:
   port: 8085

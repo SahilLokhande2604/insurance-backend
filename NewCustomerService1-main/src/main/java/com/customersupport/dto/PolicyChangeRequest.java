@@ -22,4 +22,42 @@ public class PolicyChangeRequest {
  @NotNull
  @Size(min = 5, max = 2000)
  private String details; // free-form JSON/text explaining change request
+
+ public PolicyChangeRequest() {
+	super();
+ }
+
+ public PolicyChangeRequest(@NotNull Long policyId, @NotNull @Size(min = 3, max = 100) String changeType,
+		@NotNull @Size(min = 5, max = 2000) String details) {
+	super();
+	this.policyId = policyId;
+	this.changeType = changeType;
+	this.details = details;
+ }
+
+ public Long getPolicyId() {
+	return policyId;
+ }
+
+ public void setPolicyId(Long policyId) {
+	this.policyId = policyId;
+ }
+
+ public String getChangeType() {
+	return changeType;
+ }
+
+ public void setChangeType(String changeType) {
+	this.changeType = changeType;
+ }
+
+ public String getDetails() {
+	return details;
+ }
+
+ public void setDetails(String details) {
+	this.details = details;
+ }
+ 
+ 
 }

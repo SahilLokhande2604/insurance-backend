@@ -1,1 +1,0 @@
-create database insurance_management_notifications;
