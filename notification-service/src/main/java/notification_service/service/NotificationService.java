@@ -116,4 +116,27 @@ public Notification sendNotification(Notification notification) {
 	public List<Notification> getAllNotifications() {
 		return notificationRepository.findAll();
 	}
+	
+	public Notification sendToSpecificUser(String username, Notification notification) {
+	    notification.setUsername(username);
+	    notification.setIsRead(false);
+//	    notification.setTarget("USER"); // optional field
+	    return notificationRepository.save(notification);
+	}
+	
+	public Notification createAdminNotification(String message, String type) {
+	    Notification notification = new Notification();
+//	    notification.setType(title);
+	    notification.setMessage(message);
+	    notification.setType(type);
+//	    notification.setTarget("ADMIN");
+	    notification.setIsRead(false);
+	    return notificationRepository.save(notification);
+	}
+
+	public List<Notification> getAdminNotifications() {
+        return notificationRepository.findByUsername("admin");
+    }
+
+
 }

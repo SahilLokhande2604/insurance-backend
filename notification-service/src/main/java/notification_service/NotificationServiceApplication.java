@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @SpringBootApplication(
     scanBasePackages = "notification_service"
 )
-
+//@EnableKafka
 @EnableDiscoveryClient
 @EnableJpaRepositories(basePackages = "notification_service.repositories")
 @EntityScan(basePackages = "notification_service.models")

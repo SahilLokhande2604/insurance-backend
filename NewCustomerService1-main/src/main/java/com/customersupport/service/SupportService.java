@@ -250,11 +250,11 @@ ticket.setUpdatedAt(OffsetDateTime.now());
 
 Ticket saved = ticketRepo.save(ticket);
 
-//// 🔥 SEND KAFKA EVENT
-////supportEventProducer.sendTicketRaisedEvent(
-////saved.getRaisedBy(),
-////saved.getId()
-//);
+// 🔥 SEND KAFKA EVENT
+supportEventProducer.sendTicketRaisedEvent(
+        saved.getRaisedBy(),
+        saved.getId()
+);
 
 return saved;
 }
@@ -277,14 +277,15 @@ return saved;
         ticket.setCreatedAt(OffsetDateTime.now());
         ticket.setUpdatedAt(OffsetDateTime.now());
 
-        Ticket saved = ticketRepo.save(ticket);
+        Ticket saved = ticketRepo.saveAndFlush(ticket);
 
-//        supportEventProducer.sendPolicyChangeRequestEvent(
-//                saved.getRaisedBy(),
-//                saved.getPolicyId()
-//        );
+        supportEventProducer.sendTicketRaisedEvent(
+                saved.getRaisedBy(),
+                saved.getId()
+        );
 
         return saved;
+
 
     }
 
@@ -319,16 +320,25 @@ ticket.setAdminRemarks(remarks);
 if (status == TicketStatus.RESOLVED || status == TicketStatus.REJECTED) {
 ticket.setResolvedBy(adminUsername);
 ticket.setResolvedAt(LocalDateTime.now());
+
+
 }
 
 Ticket saved = ticketRepo.save(ticket);
 
 if (status == TicketStatus.RESOLVED) {
-//    supportEventProducer.sendTicketResolvedEvent(
-//            saved.getRaisedBy(),
-//            saved.getId()
-//    );
+	supportEventProducer.sendTicketResolvedEvent(
+            saved.getRaisedBy(),
+            saved.getId()
+    );
 }
+if (status == TicketStatus.RESOLVED) {
+    supportEventProducer.sendTicketResolvedEvent(
+            saved.getRaisedBy(),
+            saved.getId()
+    );
+}
+
 
 return saved;
 

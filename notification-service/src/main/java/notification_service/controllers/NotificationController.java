@@ -11,7 +11,7 @@ import notification_service.service.NotificationService;
 
 @RestController
 @RequestMapping("/api/notifications")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+//@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class NotificationController {
 
 	private final NotificationService notificationService;
@@ -28,8 +28,8 @@ public class NotificationController {
 	}
 
 	// GET /api/notifications/user/{userId}
-	@GetMapping("/user/{userId}")
-	public ResponseEntity<List<Notification>> getNotificationsByUser(@PathVariable String username) {
+	@GetMapping("/user")
+	public ResponseEntity<List<Notification>> getNotificationsByUser(@RequestHeader("X-USERNAME") String username) {
 		return ResponseEntity.ok(notificationService.getNotificationsByUser(username));
 	}
 
@@ -50,8 +50,8 @@ public class NotificationController {
 	}
 
 	// PUT /api/notifications/user/{userId}/read-all
-	@PutMapping("/user/{username}/read-all")
-	public ResponseEntity<Void> markAllAsRead(@PathVariable String username) {
+	@PutMapping("/user/read-all")
+	public ResponseEntity<Void> markAllAsRead(@RequestHeader("X-USERNAME") String username) {
 		notificationService.markAllAsRead(username);
 		return ResponseEntity.noContent().build();
 	}
