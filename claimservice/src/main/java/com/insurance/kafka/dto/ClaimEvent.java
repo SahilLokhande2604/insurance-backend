@@ -1,9 +1,10 @@
-package notification_service.dto;
+package com.insurance.kafka.dto;
 
 import java.time.LocalDateTime;
 
-public class UserEvent {
+public class ClaimEvent {
 
+//    private Long userId;
     private String username;
     private String type;
     private String eventType;
@@ -12,19 +13,25 @@ public class UserEvent {
     private LocalDateTime timestamp;
     private String status;
 
-    public UserEvent() {}
+    public ClaimEvent() {}
 
-	public UserEvent(String username, String type, String eventType, String message, String serviceSource,
-			LocalDateTime timestamp, String status) {
-		super();
-		this.username = username;
-		this.type = type;
-		this.eventType = eventType;
-		this.message = message;
-		this.serviceSource = serviceSource;
-		this.timestamp = timestamp;
-		this.status = status;
-	}
+    public ClaimEvent(
+                      String username,
+                      String type,
+                      String eventType,
+                      String message,
+                      String serviceSource,
+                      LocalDateTime timestamp,
+                      String status) {
+
+        this.username = username;
+        this.type = type;
+        this.eventType = eventType;
+        this.message = message;
+        this.serviceSource = serviceSource;
+        this.timestamp = timestamp;
+        this.status = status;
+    }
 
 	public String getUsername() {
 		return username;

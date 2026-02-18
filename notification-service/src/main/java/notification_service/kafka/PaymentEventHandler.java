@@ -1,35 +1,36 @@
 package notification_service.kafka;
 
-import notification_service.dto.UserEvent;
+import notification_service.dto.PaymentEvent;
 import notification_service.models.Notification;
 import notification_service.service.NotificationService;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
-public class UserEventConsumer {
+public class PaymentEventHandler {
 
     private final NotificationService notificationService;
 
-    public UserEventConsumer(NotificationService notificationService) {
+    public PaymentEventHandler(NotificationService notificationService) {
         this.notificationService = notificationService;
     }
 
-//    @KafkaListener(
-//            topics = "insurance",
-//            groupId = "notification-service"
-//    )
-    public void onMessage(UserEvent event) {
+    public void handle(PaymentEvent event) {
 
-        if (!"user".equals(event.getType())) {
+        if (!"payment".equalsIgnoreCase(event.getType())) {
             return;
         }
 
         Notification notification = new Notification();
 
-        notification.setUsername(event.getUsername());
+        // If username exists use it, otherwise map userId
+        notification.setUsername(
+                event.getUsername() != null ?
+                        event.getUsername() :
+                        "User-" 
+        );
+
         notification.setMessage(event.getMessage());
         notification.setType(event.getType());
         notification.setEventType(event.getEventType());
@@ -40,7 +41,6 @@ public class UserEventConsumer {
 
         notificationService.sendNotification(notification);
 
-        System.out.println("NOTIFICATION SAVED SUCCESSFULLY");
+        System.out.println("PAYMENT NOTIFICATION SAVED");
     }
 }
-

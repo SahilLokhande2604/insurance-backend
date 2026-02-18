@@ -1,34 +1,25 @@
 package notification_service.kafka;
 
-import notification_service.dto.UserEvent;
 import notification_service.models.Notification;
 import notification_service.service.NotificationService;
-import org.springframework.kafka.annotation.KafkaListener;
+import notification_service.dto.PolicyEvent;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
-public class UserEventConsumer {
+public class PolicyEventHandler {
 
     private final NotificationService notificationService;
 
-    public UserEventConsumer(NotificationService notificationService) {
+    public PolicyEventHandler(NotificationService notificationService) {
         this.notificationService = notificationService;
     }
 
-//    @KafkaListener(
-//            topics = "insurance",
-//            groupId = "notification-service"
-//    )
-    public void onMessage(UserEvent event) {
-
-        if (!"user".equals(event.getType())) {
-            return;
-        }
+    public void handle(PolicyEvent event) {
+        if (!"policy".equalsIgnoreCase(event.getType())) return;
 
         Notification notification = new Notification();
-
         notification.setUsername(event.getUsername());
         notification.setMessage(event.getMessage());
         notification.setType(event.getType());
@@ -39,8 +30,6 @@ public class UserEventConsumer {
         notification.setUpdatedAt(LocalDateTime.now());
 
         notificationService.sendNotification(notification);
-
-        System.out.println("NOTIFICATION SAVED SUCCESSFULLY");
+        System.out.println("POLICY NOTIFICATION SAVED");
     }
 }
-

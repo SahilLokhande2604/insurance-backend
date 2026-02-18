@@ -158,6 +158,7 @@ import com.customersupport.client.PolicyClient;
 import com.customersupport.dto.PolicyChangeRequest;
 import com.customersupport.dto.PolicyDto;
 import com.customersupport.exception.NotFoundException;
+import com.customersupport.kafka.SupportEventProducer;
 import com.customersupport.model.Ticket;
 import com.customersupport.model.TicketStatus;
 import com.customersupport.model.TicketType;
@@ -175,20 +176,32 @@ public class SupportService {
 
     private final PolicyClient policyClient;
     private final TicketRepository ticketRepo;
+    private final SupportEventProducer supportEventProducer;
+
     
     
 
-    public SupportService(PolicyClient policyClient, TicketRepository ticketRepo) {
-		super();
-		this.policyClient = policyClient;
-		this.ticketRepo = ticketRepo;
-	}
+//    public SupportService(PolicyClient policyClient, TicketRepository ticketRepo) {
+//		super();
+//		this.policyClient = policyClient;
+//		this.ticketRepo = ticketRepo;
+//	}
+    
+    public SupportService(PolicyClient policyClient, TicketRepository ticketRepo,
+		SupportEventProducer supportEventProducer) {
+	super();
+	this.policyClient = policyClient;
+	this.ticketRepo = ticketRepo;
+	this.supportEventProducer = supportEventProducer;
+}
 
 	public List<PolicyDto> listAllPolicies() {
         return policyClient.getAllPolicies();
     }
 
-    public List<PolicyDto> listPoliciesByUsername(String username) {
+
+
+	public List<PolicyDto> listPoliciesByUsername(String username) {
         return policyClient.getPoliciesByUsername(username);
     }
 
@@ -196,22 +209,56 @@ public class SupportService {
         return policyClient.getPolicyById(policyId);
     }
 
+//    public Ticket raiseIssue(String raisedBy,
+//                             Long policyId,
+//                             String subject,
+//                             String description) {
+//
+//        Ticket ticket = new Ticket();
+//        ticket.setRaisedBy(raisedBy == null ? "anonymous" : raisedBy);
+//        ticket.setPolicyId(policyId);
+//        ticket.setType(TicketType.ISSUE);
+//        ticket.setSubject(subject);
+//        ticket.setDescription(description);
+//        ticket.setCreatedAt(OffsetDateTime.now());
+//        ticket.setUpdatedAt(OffsetDateTime.now());
+//
+//        Ticket saved = ticketRepo.save(ticket);
+//
+//        supportEventProducer.sendIssueRaisedEvent(
+//                saved.getRaisedBy(),
+//                saved.getPolicyId()
+//        );
+//
+//        return saved;
+//
+//    }
+    
     public Ticket raiseIssue(String raisedBy,
-                             Long policyId,
-                             String subject,
-                             String description) {
+            Long policyId,
+            String subject,
+            String description) {
 
-        Ticket ticket = new Ticket();
-        ticket.setRaisedBy(raisedBy == null ? "anonymous" : raisedBy);
-        ticket.setPolicyId(policyId);
-        ticket.setType(TicketType.ISSUE);
-        ticket.setSubject(subject);
-        ticket.setDescription(description);
-        ticket.setCreatedAt(OffsetDateTime.now());
-        ticket.setUpdatedAt(OffsetDateTime.now());
+Ticket ticket = new Ticket();
+ticket.setRaisedBy(raisedBy == null ? "anonymous" : raisedBy);
+ticket.setPolicyId(policyId);
+ticket.setType(TicketType.ISSUE);
+ticket.setSubject(subject);
+ticket.setDescription(description);
+ticket.setCreatedAt(OffsetDateTime.now());
+ticket.setUpdatedAt(OffsetDateTime.now());
 
-        return ticketRepo.save(ticket);
-    }
+Ticket saved = ticketRepo.save(ticket);
+
+//// 🔥 SEND KAFKA EVENT
+////supportEventProducer.sendTicketRaisedEvent(
+////saved.getRaisedBy(),
+////saved.getId()
+//);
+
+return saved;
+}
+
 
     public Ticket requestPolicyChange(String raisedBy,
                                       PolicyChangeRequest req) {
@@ -230,7 +277,15 @@ public class SupportService {
         ticket.setCreatedAt(OffsetDateTime.now());
         ticket.setUpdatedAt(OffsetDateTime.now());
 
-        return ticketRepo.save(ticket);
+        Ticket saved = ticketRepo.save(ticket);
+
+//        supportEventProducer.sendPolicyChangeRequestEvent(
+//                saved.getRaisedBy(),
+//                saved.getPolicyId()
+//        );
+
+        return saved;
+
     }
 
     public Ticket getTicket(Long id) {
@@ -266,7 +321,17 @@ ticket.setResolvedBy(adminUsername);
 ticket.setResolvedAt(LocalDateTime.now());
 }
 
-return ticketRepo.save(ticket);
+Ticket saved = ticketRepo.save(ticket);
+
+if (status == TicketStatus.RESOLVED) {
+//    supportEventProducer.sendTicketResolvedEvent(
+//            saved.getRaisedBy(),
+//            saved.getId()
+//    );
+}
+
+return saved;
+
 }
 
 }

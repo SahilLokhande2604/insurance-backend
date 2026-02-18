@@ -2,7 +2,7 @@ package notification_service.dto;
 
 import java.time.LocalDateTime;
 
-public class UserEvent {
+public class ClaimEvent {
 
     private String username;
     private String type;
@@ -12,9 +12,9 @@ public class UserEvent {
     private LocalDateTime timestamp;
     private String status;
 
-    public UserEvent() {}
+    public ClaimEvent() {}
 
-	public UserEvent(String username, String type, String eventType, String message, String serviceSource,
+	public ClaimEvent(String username, String type, String eventType, String message, String serviceSource,
 			LocalDateTime timestamp, String status) {
 		super();
 		this.username = username;

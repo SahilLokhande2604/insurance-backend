@@ -1,6 +1,6 @@
 package notification_service.kafka;
 
-import notification_service.dto.UserEvent;
+import notification_service.dto.ClaimEvent;
 import notification_service.models.Notification;
 import notification_service.service.NotificationService;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class UserEventConsumer {
+public class ClaimEventConsumer {
 
     private final NotificationService notificationService;
 
-    public UserEventConsumer(NotificationService notificationService) {
+    public ClaimEventConsumer(NotificationService notificationService) {
         this.notificationService = notificationService;
     }
 
@@ -21,9 +21,9 @@ public class UserEventConsumer {
 //            topics = "insurance",
 //            groupId = "notification-service"
 //    )
-    public void onMessage(UserEvent event) {
+    public void onClaimEvent(ClaimEvent event) {
 
-        if (!"user".equals(event.getType())) {
+        if (!"claim".equals(event.getType())) {
             return;
         }
 
@@ -40,7 +40,7 @@ public class UserEventConsumer {
 
         notificationService.sendNotification(notification);
 
-        System.out.println("NOTIFICATION SAVED SUCCESSFULLY");
+        System.out.println("CLAIM NOTIFICATION SAVED");
     }
 }
 

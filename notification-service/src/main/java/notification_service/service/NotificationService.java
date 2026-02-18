@@ -61,15 +61,20 @@ public NotificationService(NotificationRepository notificationRepository
 @Transactional
 public Notification sendNotification(Notification notification) {
 
-    if (notification.getIsRead() == null)
+    if (notification.getIsRead() == null) {
         notification.setIsRead(false);
+        System.out.println("error in first if ");
+    }
 
-    if (notification.getCreatedAt() == null)
+    if (notification.getCreatedAt() == null) {
         notification.setCreatedAt(LocalDateTime.now());
+        System.out.println("error in 2nd if ");
+    }
 
     notification.setUpdatedAt(LocalDateTime.now());
 
     Notification saved = notificationRepository.save(notification);
+    System.out.println("notification send  "+ saved);
 
     System.out.println("SAVED IN DB -> ID: " + saved.getId());
 

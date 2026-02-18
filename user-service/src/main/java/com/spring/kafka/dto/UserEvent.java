@@ -1,4 +1,4 @@
-package notification_service.dto;
+package com.spring.kafka.dto;
 
 import java.time.LocalDateTime;
 

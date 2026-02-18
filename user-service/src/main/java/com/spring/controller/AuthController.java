@@ -50,9 +50,7 @@ public class AuthController {
         User user = userOpt.get();
         
      // 🔥 SEND LOGIN EVENT
-        userEventProducer.sendUserLoginEvent(
-                Long.valueOf(username.hashCode())
-        );
+        userEventProducer.sendUserLoginEvent(username);
 
         
         String token = JwtUtil.generateToken(user.getUsername(), user.getRole());
@@ -101,11 +99,7 @@ public class AuthController {
 //        userEventProducer.sendUserEvent("New user registered: " + username);
         
         // 🔥 SEND KAFKA EVENT HERE
-        userEventProducer.sendUserRegistrationEvent(
-                Long.valueOf(username.hashCode()),  // temporary unique ID
-                username,
-                username + "@mail.com"
-        );
+        userEventProducer.sendUserRegistrationEvent(username, "registerd", "successfully...");
         
         return ResponseEntity.ok("User registered successfully");
     }
