@@ -1,41 +1,42 @@
 package com.example.payment_service.dto;
 
-
-import lombok.Data;
- 
-@Data
 public class CreatePaymentRequest {
- 
-    private Long orderId;
-    private Long userId;
+
+    private String username;   // 🔥 PRIMARY KEY
+    private Long policyId;     // 🔥 policy user is buying
     private Double amount;
-	public Long getOrderId() {
-		return orderId;
+
+    public CreatePaymentRequest() {}
+
+	public String getUsername() {
+		return username;
 	}
-	public void setOrderId(Long orderId) {
-		this.orderId = orderId;
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
-	public Long getUserId() {
-		return userId;
+
+	public Long getPolicyId() {
+		return policyId;
 	}
-	public void setUserId(Long userId) {
-		this.userId = userId;
+
+	public void setPolicyId(Long policyId) {
+		this.policyId = policyId;
 	}
+
 	public Double getAmount() {
 		return amount;
 	}
+
 	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
-	
-	public CreatePaymentRequest() {
+
+	public CreatePaymentRequest(String username, Long policyId, Double amount) {
 		super();
-	}
-	public CreatePaymentRequest(Long orderId, Long userId, Double amount) {
-		super();
-		this.orderId = orderId;
-		this.userId = userId;
+		this.username = username;
+		this.policyId = policyId;
 		this.amount = amount;
 	}
+    
 }
- 

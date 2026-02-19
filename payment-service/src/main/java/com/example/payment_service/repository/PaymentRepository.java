@@ -1,16 +1,15 @@
 package com.example.payment_service.repository;
 
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.example.payment_service.entity.Payment;
-
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 import java.util.Optional;
- 
+
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
- 
-    Optional<Payment> findByOrderId(Long orderId);
- 
+
+//    Optional<Payment> findByOrderId(Long orderId);
+
     Optional<Payment> findByRazorpayOrderId(String razorpayOrderId);
+
+    List<Payment> findAllByUsername(String username); // fetch all payments by username
 }
- 
