@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @EnableDiscoveryClient
 @EnableJpaRepositories(basePackages = "notification_service.repositories")
 @EntityScan(basePackages = "notification_service.models")
+
 public class NotificationServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(NotificationServiceApplication.class, args);

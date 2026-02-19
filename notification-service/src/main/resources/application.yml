@@ -19,6 +19,14 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      spring:
+       json:
+        trusted:
+         packages: "*"
+        add:
+         type:
+          headers: false
+
     consumer:
       group-id: notification-service
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer

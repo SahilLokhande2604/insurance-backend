@@ -250,11 +250,11 @@ ticket.setUpdatedAt(OffsetDateTime.now());
 
 Ticket saved = ticketRepo.save(ticket);
 
-// 🔥 SEND KAFKA EVENT
-supportEventProducer.sendTicketRaisedEvent(
-        saved.getRaisedBy(),
-        saved.getId()
-);
+//// 🔥 SEND KAFKA EVENT
+//supportEventProducer.sendTicketRaisedEvent(
+//        saved.getRaisedBy(),
+//        saved.getId()
+//);
 
 return saved;
 }
@@ -279,10 +279,10 @@ return saved;
 
         Ticket saved = ticketRepo.saveAndFlush(ticket);
 
-        supportEventProducer.sendTicketRaisedEvent(
-                saved.getRaisedBy(),
-                saved.getId()
-        );
+//        supportEventProducer.sendTicketRaisedEvent(
+//                saved.getRaisedBy(),
+//                saved.getId()
+//        );
 
         return saved;
 
@@ -327,16 +327,16 @@ ticket.setResolvedAt(LocalDateTime.now());
 Ticket saved = ticketRepo.save(ticket);
 
 if (status == TicketStatus.RESOLVED) {
-	supportEventProducer.sendTicketResolvedEvent(
-            saved.getRaisedBy(),
-            saved.getId()
-    );
+//	supportEventProducer.sendTicketResolvedEvent(
+//            saved.getRaisedBy(),
+//            saved.getId()
+//    );
 }
 if (status == TicketStatus.RESOLVED) {
-    supportEventProducer.sendTicketResolvedEvent(
-            saved.getRaisedBy(),
-            saved.getId()
-    );
+//    supportEventProducer.sendTicketResolvedEvent(
+//            saved.getRaisedBy(),
+//            saved.getId()
+//    );
 }
 
 

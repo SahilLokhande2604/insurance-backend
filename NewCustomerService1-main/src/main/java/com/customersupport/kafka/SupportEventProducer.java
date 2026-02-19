@@ -125,15 +125,7 @@ public class SupportEventProducer {
                 "OPEN"
         );
 
-        kafkaTemplate.send(TOPIC, event)
-                .whenComplete((result, ex) -> {
-                    if (ex != null) {
-                        logger.error("❌ Failed to send event", ex);
-                    } else {
-                        logger.info("✅ Event sent successfully to partition {}",
-                                result.getRecordMetadata().partition());
-                    }
-                });
+        kafkaTemplate.send(TOPIC, event);
         
         System.out.println("🔥 Sending Kafka Event: " + event);
         
